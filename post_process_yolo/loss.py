@@ -125,12 +125,17 @@ class YOLOv11Loss(nn.Module):
             # DFL Loss 
             gt_ltrb = self.make_ltrb_fixed(anchor_points_matched, gt_box_matched, stride_tensor_matched)
             
-            # Clamp to valid range [0, reg_max - 0.01]
-            target_ltrb_scaled = gt_ltrb.clamp(0, self.reg_max - 0.01)
+            # Clamp to valid range [0, reg_max - 1e-6]
+            target_ltrb_scaled = gt_ltrb.clamp(0, self.reg_max - 1e-6)
             
             # Get integer bounds
             target_left = target_ltrb_scaled.long()  # Floor
             target_right = (target_left + 1).clamp(max=self.reg_max - 1)  # Ceiling
+            # Ensure we don't try to interpolate at the boundary
+            at_boundary = (target_left >= self.reg_max - 1)
+            target_right = torch.where(at_boundary, target_left, target_right)
+            weight_right = torch.where(at_boundary, torch.zeros_like(weight_right), weight_right)
+            weight_left = torch.where(at_boundary, torch.ones_like(weight_left), weight_left)
             
             # Interpolation weights
             weight_right = target_ltrb_scaled - target_left.float()
