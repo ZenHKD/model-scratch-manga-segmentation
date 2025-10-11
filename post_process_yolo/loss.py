@@ -134,12 +134,13 @@ class YOLOv11Loss(nn.Module):
             # Ensure we don't try to interpolate at the boundary
             at_boundary = (target_left >= self.reg_max - 1)
             target_right = torch.where(at_boundary, target_left, target_right)
-            weight_right = torch.where(at_boundary, torch.zeros_like(weight_right), weight_right)
-            weight_left = torch.where(at_boundary, torch.ones_like(weight_left), weight_left)
-            
+
             # Interpolation weights
             weight_right = target_ltrb_scaled - target_left.float()
             weight_left = 1.0 - weight_right
+
+            weight_right = torch.where(at_boundary, torch.zeros_like(weight_right), weight_right)
+            weight_left = torch.where(at_boundary, torch.ones_like(weight_left), weight_left)
             
             # Reshape predictions for DFL loss
             pred_dist_reshaped = pred_dist_matched.view(-1, self.reg_max)
