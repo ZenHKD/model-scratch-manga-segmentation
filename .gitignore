@@ -1,0 +1,15 @@
+Manga109_released_2023_12_07/
+MangaSegmentation/
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.pyc
+
+
+outputs_yolo/
+architecture/
+run_mask-rcnn/
+
+model_maskrcnn_architecture.txt
