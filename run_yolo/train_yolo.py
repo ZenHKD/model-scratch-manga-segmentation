@@ -263,13 +263,20 @@ def save_confusion_matrix(y_true, y_pred, output_dir, num_classes, epoch):
         print("NOT have info for confusion matrix.")
         return
 
-    class_labels = list(range(num_classes)) 
-    background_id = num_classes
-
-    # Generate a complete list of labels including background to draw on
-    plot_labels = class_labels + ['background']
-    # Generate a complete list of labels including background for calculation
-    all_labels_ids = class_labels + [background_id]
+    # num_classes=2 means: background (0) + 1 object class (1)
+    # num_classes_obj = num_classes - 1  # Number of real class object = 1
+    background_id = num_classes  # 2
+    
+    # Real labels: [1] (class object) + [2] (background when miss)
+    class_labels = list(range(1, num_classes))  # [1] 
+    
+    # Labels to plot (including background)
+    plot_labels = [f'class_{i} (bubble)' for i in class_labels] + ['background']  
+    # ['class_1 (bubble)', 'background']
+    
+    # Labels to calculate confusion matrix (including background)
+    all_labels_ids = class_labels + [background_id]  # [1, 2]
+    
     cm = confusion_matrix(y_true, y_pred, labels=all_labels_ids)
     
     
