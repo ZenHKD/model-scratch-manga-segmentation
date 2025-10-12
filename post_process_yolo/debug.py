@@ -115,7 +115,7 @@ def check_assigner_outputs(model, data_loader, device, num_batches=3):
     Check if Task-Aligned Assigner is working correctly.
     """
     model.train()  # Need gradients
-    loss_fn = YOLOv11Loss(model, num_classes_obj=1)
+    loss_fn = YOLOv11Loss(model, num_classes_obj=1, box_weight=7.0, cls_weight=1.0, mask_weight=7.0, dfl_weight=1.0)
     
     print("\n" + "="*60)
     print("Checking Task-Aligned Assigner")

@@ -453,7 +453,7 @@ def main(args):
         conf_thresh=args.conf_thresh,
         nms_thresh=args.nms_thresh,
         mask_batch_size=args.mask_batch_size,
-        max_det=30
+        max_det=50
     )
     
     print(f"\n{'='*60}")
