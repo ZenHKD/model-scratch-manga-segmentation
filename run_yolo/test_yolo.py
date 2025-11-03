@@ -215,7 +215,7 @@ def main(args):
     )
     
     model = YOLOSeg(num_classes=args.num_classes).to(device)
-    model.load_state_dict(torch.load(args.model_path, map_location=device))
+    model.load_state_dict(torch.load(args.model_path, map_location=device, weights_only=True))
     print("Model weights loaded successfully")
     
     post_processor = PostProcessorV2(
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     parser.add_argument("--resize-batch-size", type=int, default=16, help="Process N mask at a time for resizing mask")
     parser.add_argument("--num-workers", type=int, default=8)
     parser.add_argument("--conf-thresh", type=float, default=0.98, help="Confidence threshold for post-processing.")
-    parser.add_argument("--nms-thresh", type=float, default=0.9, help="NMS IoU threshold for post-processing.")
+    parser.add_argument("--nms-thresh", type=float, default=0.2, help="NMS IoU threshold for post-processing.")
     parser.add_argument("--mask-batch-size", type=int, default=4, help="Batch size for mask processing during inference (critical for VRAM management).")
     parser.add_argument("--save-results", action='store_true', help="Save evaluation metrics to a JSON file.")
     

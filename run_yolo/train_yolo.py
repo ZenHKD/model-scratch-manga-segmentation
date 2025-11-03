@@ -580,7 +580,7 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--accumulation-steps", type=int, default=2, help="Gradient accumulation steps")
     parser.add_argument("--conf-thresh", type=float, default=0.9, help="Confidence threshold for validation")
-    parser.add_argument("--nms-thresh", type=float, default=0.9, help="NMS IoU threshold for validation")
+    parser.add_argument("--nms-thresh", type=float, default=0.1, help="NMS IoU threshold for validation")
     parser.add_argument("--mask-batch-size", type=int, default=16, help="Batch size for mask processing during validation")
     parser.add_argument("--epoch-val", type=int, default=5, help="A calculation of valdation per number of epoch")
     parser.add_argument("--debug", action='store_true', help="Enable debug mode: check and visualize outputs before starting to train.")
