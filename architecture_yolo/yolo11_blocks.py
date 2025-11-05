@@ -15,29 +15,13 @@ class Bottleneck(nn.Module):
         return x + self.cv2(self.cv1(x)) if self.add else self.cv2(self.cv1(x))
 
 
-class C3k(nn.Module):
-    """C3k module, which is a stack of Bottlenecks."""
-    def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):
-        super().__init__()
-        c_ = int(c2 * e)  # hidden channels
-        self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, k=(3, 3), e=1.0) for _ in range(n)))
-
-    def forward(self, x):
-        return self.m(x)
-
-
 class C3k2(nn.Module):
     """C3k2 block, with 2 convolutions by default (YOLOv11 version)."""
     def __init__(self, c1, c2, n=1, c3k=False, e=0.5, g=1, shortcut=True):
         super().__init__()
         c_ = int(c2 * e)  # hidden channels
         self.cv1 = Conv(c1, 2 * c_, 1, 1)
-
-        if c3k:
-            self.m = C3k(c_, c_, n, shortcut, g, e=1.0)
-        else:
-            self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, k=(3, 3), e=1.0) for _ in range(n)))
-        
+        self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, k=(3, 3), e=1.0) for _ in range(n)))
         self.cv2 = Conv(2 * c_, c2, 1) 
 
     def forward(self, x):

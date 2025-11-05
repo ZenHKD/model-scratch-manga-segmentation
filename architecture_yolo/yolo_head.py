@@ -24,8 +24,7 @@ class YSNHead(nn.Module):
     def forward(self, features):
         box_out, cls_out, mask_coef_out = [], [], []
         for i, x in enumerate(features):
-            box_dist = self.box_preds[i](x)
-            box_out.append(box_dist)
+            box_out.append(self.box_preds[i](x))
             cls_out.append(self.cls_preds[i](x))
             mask_coef_out.append(self.mask_coef_preds[i](x))
         return box_out, cls_out, mask_coef_out

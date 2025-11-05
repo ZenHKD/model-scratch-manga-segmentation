@@ -39,5 +39,5 @@ class YOLOSeg(nn.Module):
         proto_out = self.proto(neck_features[0])
 
         # Return all raw output
-        # The processing logic will be outside the model (in the loss function or post-process)
+        # The processing logic will be outside the model 
         return box_preds, cls_preds, mask_coef_preds, proto_out
