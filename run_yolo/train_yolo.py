@@ -170,7 +170,7 @@ def evaluate_yolo_custom(model, data_loader, post_processor, device, args):
 
                 # Browse through each prediction to find a match
                 for pred_idx in range(pred_boxes.shape[0]):
-                    # Tìm nhãn thật có IoU cao nhất với dự đoán hiện tại
+                    # Find the true label with the highest IoU given the current prediction
                     best_gt_iou, best_gt_idx = iou_matrix[pred_idx].max(0)
 
                     # If IoU > threshold and the real label is not matched
